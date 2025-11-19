@@ -12,14 +12,20 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TourPackage {
+public class TourPackage extends Offer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private double price;
+    private double totalPrice;
     private String accommodation;
     private String entryDate;
     private String departureDate;
-    @OneToMany
-    private List<City> cities;
+    private String originCity;
+    private String destinyCity;
+
+    @Override
+    public void addIva(int iva) {
+        double result = this.totalPrice * (1 + iva /100);
+        this.totalPrice = result;
+    }
 }

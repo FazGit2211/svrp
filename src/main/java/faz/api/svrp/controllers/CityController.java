@@ -3,16 +3,14 @@ package faz.api.svrp.controllers;
 import faz.api.svrp.models.City;
 import faz.api.svrp.services.cityServices.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(name = "/citys", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping("/citys")
 public class CityController {
-
     @Autowired
     private final CityService _cityService;
 
@@ -21,9 +19,9 @@ public class CityController {
     }
 
     @PostMapping
-    public ResponseEntity<City> CreateNew(@RequestBody City city){
+    public ResponseEntity<City> createCity(@RequestBody City city){
         try {
-            City cityCreated = _cityService.CreateNew(city);
+            City cityCreated = _cityService.createNew(city);
             if (cityCreated == null){
                 return ResponseEntity.badRequest().build();
             }
@@ -34,9 +32,9 @@ public class CityController {
     }
 
     @GetMapping
-    public ResponseEntity<List<City>> GetAll(){
+    public ResponseEntity<List<City>> getAllCitys(){
         try {
-            List<City> cityList = _cityService.GetAll();
+            List<City> cityList = _cityService.getAll();
             if (cityList.isEmpty()){
                 return ResponseEntity.noContent().build();
             }

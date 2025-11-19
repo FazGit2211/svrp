@@ -17,7 +17,7 @@ public class CityService implements CityInterface{
     }
 
     @Override
-    public City CreateNew(City city) {
+    public City createNew(City city) {
         try {
             return _cityRepository.save(city);
         } catch (RuntimeException e) {
@@ -26,7 +26,7 @@ public class CityService implements CityInterface{
     }
 
     @Override
-    public List<City> GetAll() {
+    public List<City> getAll() {
         try {
             return _cityRepository.findAll();
         } catch (RuntimeException e) {

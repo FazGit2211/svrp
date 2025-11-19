@@ -17,7 +17,7 @@ public class ClientService implements ClientInterface{
     }
 
     @Override
-    public Client CreateNew(Client client) {
+    public Client createNew(Client client) {
         try {
             return _clientRepository.save(client);
         } catch (RuntimeException e) {
@@ -26,7 +26,7 @@ public class ClientService implements ClientInterface{
     }
 
     @Override
-    public List<Client> GetAll() {
+    public List<Client> getAll() {
         try {
             return _clientRepository.findAll();
         } catch (RuntimeException e) {

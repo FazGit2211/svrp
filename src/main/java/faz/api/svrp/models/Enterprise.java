@@ -21,4 +21,6 @@ public class Enterprise {
     private String cuit;
     @OneToMany
     private List<TourPackage> tourPackages;
+    @OneToMany
+    private List<Passage> passageList;
 }

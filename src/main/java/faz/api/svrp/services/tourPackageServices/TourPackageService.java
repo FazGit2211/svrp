@@ -17,7 +17,7 @@ public class TourPackageService implements TourPackageInterface{
     }
 
     @Override
-    public TourPackage CreateNew(TourPackage tourPackage) {
+    public TourPackage createNew(TourPackage tourPackage) {
         try {
             return _tourPackageRepository.save(tourPackage);
         } catch (RuntimeException e) {
@@ -26,7 +26,7 @@ public class TourPackageService implements TourPackageInterface{
     }
 
     @Override
-    public List<TourPackage> GetAll() {
+    public List<TourPackage> getAll() {
         try {
             return _tourPackageRepository.findAll();
         } catch (RuntimeException e) {

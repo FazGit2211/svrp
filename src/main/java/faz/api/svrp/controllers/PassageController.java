@@ -1,7 +1,7 @@
 package faz.api.svrp.controllers;
 
-import faz.api.svrp.models.Client;
-import faz.api.svrp.services.clientServices.ClientService;
+import faz.api.svrp.models.Passage;
+import faz.api.svrp.services.passageServices.PassageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,20 +9,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/clients")
-public class ClientController {
+@RequestMapping("/passages")
+public class PassageController {
     @Autowired
-    private final ClientService _clientService;
+    private final PassageService _passageService;
 
-    public ClientController(ClientService clientServ){
-        _clientService = clientServ;
+    public PassageController(PassageService passageServ){
+        _passageService = passageServ;
     }
 
     @PostMapping
-    public ResponseEntity<Client> createClient(@RequestBody Client client){
+    public ResponseEntity<Passage> createPassage(@RequestBody Passage passage){
         try {
-            Client clientCreated = _clientService.createNew(client);
-            if (clientCreated == null){
+            Passage passageCreated = _passageService.createNew(passage);
+            if (passageCreated == null){
                 return ResponseEntity.badRequest().build();
             }
             return ResponseEntity.ok().build();
@@ -32,13 +32,13 @@ public class ClientController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Client>> getAllClients(){
+    public ResponseEntity<List<Passage>> getAllPassages(){
         try {
-            List<Client> clientList = _clientService.getAll();
-            if (clientList.isEmpty()){
+            List<Passage> passageList = _passageService.getAll();
+            if (passageList.isEmpty()){
                 return ResponseEntity.noContent().build();
             }
-            return ResponseEntity.ok(clientList);
+            return ResponseEntity.ok(passageList);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }

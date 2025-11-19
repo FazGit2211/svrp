@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(name = "/enterprises", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping("/enterprises")
 public class EnterpriseController {
 
     @Autowired
@@ -21,9 +21,9 @@ public class EnterpriseController {
     }
 
     @PostMapping
-    public ResponseEntity<Enterprise> CreateNewEnterprise(@RequestBody Enterprise enterprise){
+    public ResponseEntity<Enterprise> createEnterprise(@RequestBody Enterprise enterprise){
         try {
-            Enterprise enterpriseCreated = _enterpriseService.CreateNew(enterprise);
+            Enterprise enterpriseCreated = _enterpriseService.createNew(enterprise);
             if (enterpriseCreated == null){
                 return ResponseEntity.badRequest().build();
             }
@@ -34,9 +34,9 @@ public class EnterpriseController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Enterprise>> GetAllEnterprise(){
+    public ResponseEntity<List<Enterprise>> getAllEnterprises(){
         try {
-            List<Enterprise> enterpriseList = _enterpriseService.GetAll();
+            List<Enterprise> enterpriseList = _enterpriseService.getAll();
             if (enterpriseList.isEmpty()){
                 return ResponseEntity.noContent().build();
             }

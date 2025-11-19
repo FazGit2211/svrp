@@ -5,6 +5,6 @@ import faz.api.svrp.models.City;
 import java.util.List;
 
 public interface CityInterface {
-    City CreateNew(City city);
-    List<City> GetAll();
+    City createNew(City city);
+    List<City> getAll();
 }

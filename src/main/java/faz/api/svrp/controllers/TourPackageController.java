@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(name = "/tourpackages", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping("/tourpackages")
 public class TourPackageController {
 
     private final TourPackageService _tourPackageService;
@@ -19,9 +19,9 @@ public class TourPackageController {
     }
 
     @PostMapping
-    public ResponseEntity<TourPackage> CreateNewTourPackage(@RequestBody TourPackage tourPackage){
+    public ResponseEntity<TourPackage> createTourPackage(@RequestBody TourPackage tourPackage){
         try {
-            TourPackage tourPackageCreated = _tourPackageService.CreateNew(tourPackage);
+            TourPackage tourPackageCreated = _tourPackageService.createNew(tourPackage);
             if (tourPackageCreated == null){
                 return ResponseEntity.badRequest().build();
             }
@@ -32,9 +32,9 @@ public class TourPackageController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TourPackage>> GetAllTourPackages(){
+    public ResponseEntity<List<TourPackage>> getAllTourPackages(){
         try {
-            List<TourPackage> tourPackageList = _tourPackageService.GetAll();
+            List<TourPackage> tourPackageList = _tourPackageService.getAll();
             if (tourPackageList.isEmpty()){
                 return ResponseEntity.noContent().build();
             }

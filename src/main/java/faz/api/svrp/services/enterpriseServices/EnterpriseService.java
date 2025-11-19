@@ -17,7 +17,7 @@ public class EnterpriseService implements EnterpriseInterface{
     }
 
     @Override
-    public Enterprise CreateNew(Enterprise enterprise) {
+    public Enterprise createNew(Enterprise enterprise) {
         try {
             return _enterpriseRepository.save(enterprise);
         } catch (RuntimeException e) {
@@ -26,7 +26,7 @@ public class EnterpriseService implements EnterpriseInterface{
     }
 
     @Override
-    public List<Enterprise> GetAll() {
+    public List<Enterprise> getAll() {
         try {
             return _enterpriseRepository.findAll();
         } catch (RuntimeException e) {
