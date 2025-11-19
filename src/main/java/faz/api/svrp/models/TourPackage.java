@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table(name = "TourPackages")
 @Data
@@ -18,6 +20,6 @@ public class TourPackage {
     private String accommodation;
     private String entryDate;
     private String departureDate;
-    private String origin;
-    private String destiny;
+    @OneToMany
+    private List<City> cities;
 }
