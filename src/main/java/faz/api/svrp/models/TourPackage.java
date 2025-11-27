@@ -1,5 +1,6 @@
 package faz.api.svrp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,20 +13,47 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TourPackage extends Offer {
+public class TourPackage{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private double totalPrice;
-    private String accommodation;
-    private String entryDate;
-    private String departureDate;
+    private double price;
     private String originCity;
     private String destinyCity;
+    private String typeTransport;
 
-    @Override
-    public void addIva(int iva) {
-        double result = this.totalPrice * (1 + iva /100);
-        this.totalPrice = result;
+    @OneToMany(mappedBy = "tourPackage")
+    @JsonIgnore
+    private List<Passage> passages;
+
+    @ManyToOne
+    @JoinColumn(name = "enterprise_id")
+    private Enterprise enterprise;
+
+    public TourPackage(double price, String originCity, String destinyCity, String typeTransport) {
+        this.price = price;
+        this.originCity = originCity;
+        this.destinyCity = destinyCity;
+        this.typeTransport = typeTransport;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setOriginCity(String originCity) {
+        this.originCity = originCity;
+    }
+
+    public void setDestinyCity(String destinyCity) {
+        this.destinyCity = destinyCity;
+    }
+
+    public void setTypeTransport(String typeTransport) {
+        this.typeTransport = typeTransport;
+    }
+
+    public void setEnterprise(Enterprise enterprise) {
+        this.enterprise = enterprise;
     }
 }

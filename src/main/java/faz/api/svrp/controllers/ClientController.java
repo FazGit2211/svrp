@@ -1,5 +1,6 @@
 package faz.api.svrp.controllers;
 
+import faz.api.svrp.dtos.ClientDto;
 import faz.api.svrp.models.Client;
 import faz.api.svrp.services.clientServices.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class ClientController {
     }
 
     @PostMapping
-    public ResponseEntity<Client> createClient(@RequestBody Client client){
+    public ResponseEntity<Client> createClient(@RequestBody ClientDto client){
         try {
             Client clientCreated = _clientService.createNew(client);
             if (clientCreated == null){
@@ -39,6 +40,32 @@ public class ClientController {
                 return ResponseEntity.noContent().build();
             }
             return ResponseEntity.ok(clientList);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PutMapping(name = "/{id}")
+    public ResponseEntity<Client> updateClientById(@RequestBody ClientDto client,@PathVariable int id){
+        try{
+            Client clientUpdated = _clientService.update(client,id);
+            if (clientUpdated == null){
+                return ResponseEntity.badRequest().build();
+            }
+            return ResponseEntity.ok(clientUpdated);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @DeleteMapping(name = "/{id}")
+    public ResponseEntity<Client> deleteClientById(@PathVariable int id){
+        try {
+            Client clientDeleted = _clientService.deleteById(id);
+            if (clientDeleted == null){
+                return ResponseEntity.badRequest().build();
+            }
+            return ResponseEntity.ok(clientDeleted);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }

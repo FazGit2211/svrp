@@ -1,5 +1,6 @@
 package faz.api.svrp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,8 +20,26 @@ public class Enterprise {
     private String name;
     private String address;
     private String cuit;
-    @OneToMany
+
+    @OneToMany(mappedBy = "enterprise")
+    @JsonIgnore
     private List<TourPackage> tourPackages;
-    @OneToMany
-    private List<Passage> passageList;
+
+    public Enterprise(String name, String address, String cuit) {
+        this.name = name;
+        this.address = address;
+        this.cuit = cuit;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setCuit(String cuit) {
+        this.cuit = cuit;
+    }
 }

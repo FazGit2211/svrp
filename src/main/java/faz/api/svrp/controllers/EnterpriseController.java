@@ -1,9 +1,9 @@
 package faz.api.svrp.controllers;
 
+import faz.api.svrp.dtos.EnterpriseDto;
 import faz.api.svrp.models.Enterprise;
 import faz.api.svrp.services.enterpriseServices.EnterpriseService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +21,7 @@ public class EnterpriseController {
     }
 
     @PostMapping
-    public ResponseEntity<Enterprise> createEnterprise(@RequestBody Enterprise enterprise){
+    public ResponseEntity<Enterprise> createEnterprise(@RequestBody EnterpriseDto enterprise){
         try {
             Enterprise enterpriseCreated = _enterpriseService.createNew(enterprise);
             if (enterpriseCreated == null){
@@ -41,6 +41,32 @@ public class EnterpriseController {
                 return ResponseEntity.noContent().build();
             }
             return ResponseEntity.ok(enterpriseList);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Enterprise> updateEnterpriseById(@RequestBody EnterpriseDto enterpriseDto,@PathVariable int id){
+        try {
+            Enterprise enterpriseUpdated = _enterpriseService.update(enterpriseDto, id);
+            if (enterpriseUpdated == null){
+                return ResponseEntity.badRequest().build();
+            }
+            return ResponseEntity.ok(enterpriseUpdated);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Enterprise> deleteEnterpriseById(@PathVariable int id){
+        try {
+            Enterprise enterpriseDeleted = _enterpriseService.delete(id);
+            if (enterpriseDeleted == null){
+                return ResponseEntity.badRequest().build();
+            }
+            return ResponseEntity.ok(enterpriseDeleted);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
