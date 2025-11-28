@@ -41,17 +41,15 @@ public class PassageService implements PassageInterface {
             if (emptyValueData) {
                 return null;
             }
+            Passage passageNew = new Passage(passage.getDate(), passage.getTicketNumber(), passage.getSeatNumber());
             Optional<Client> clientExist = _clientRepository.findById(passage.getClientId());
-            if (clientExist.isEmpty()) {
-                return null;
+            if (clientExist.isPresent()) {
+                passageNew.setClient(clientExist.get());
             }
             Optional<TourPackage> tourPackageExist = _tourPackageRepository.findById(passage.getTourpackageId());
-            if (tourPackageExist.isEmpty()) {
-                return null;
+            if (tourPackageExist.isPresent()) {
+                passageNew.setTourPackage(tourPackageExist.get());
             }
-            Passage passageNew = new Passage(passage.getDate(), passage.getTicketNumber(), passage.getSeatNumber());
-            passageNew.setClient(clientExist.get());
-            passageNew.setTourPackage(tourPackageExist.get());
             return _passageRepository.save(passageNew);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
@@ -83,6 +81,10 @@ public class PassageService implements PassageInterface {
             passageUpdate.setDate(passage.getDate());
             passageUpdate.setSeatNumber(passage.getSeatNumber());
             passageUpdate.setTicketNumber(passage.getTicketNumber());
+            Optional<TourPackage> tourPackageExist = _tourPackageRepository.findById(passage.getTourpackageId());
+            if (tourPackageExist.isPresent()) {
+                passageUpdate.setTourPackage(tourPackageExist.get());
+            }
             _passageRepository.save(passageUpdate);
             return passageUpdate;
         } catch (RuntimeException e) {

@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TourPackage{
+public class TourPackage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

@@ -32,15 +32,17 @@ public class TourPackageService implements TourPackageInterface {
     @Override
     public TourPackage createNew(TourPackageDto tourPackageDto) {
         try {
-
-            Optional<Enterprise> enterpriseExist = _enterpriseRepository.findById(tourPackageDto.getEnterpriseId());
-            if (enterpriseExist.isEmpty()) {
+            emptyValueData = emptyValues(tourPackageDto);
+            if (emptyValueData) {
                 return null;
             }
             DiscountPercentage discountPercentage = new DiscountPercentage();
             double addDiscount = discountPercentage.calculateDiscount(tourPackageDto.getPrice(), 10, 21);
             TourPackage tourPackageNew = new TourPackage(addDiscount, tourPackageDto.getOriginCity(), tourPackageDto.getDestinyCity(), tourPackageDto.getTypeTransport());
-            tourPackageNew.setEnterprise(enterpriseExist.get());
+            Optional<Enterprise> enterpriseExist = _enterpriseRepository.findById(tourPackageDto.getEnterpriseId());
+            if (enterpriseExist.isPresent()) {
+                tourPackageNew.setEnterprise(enterpriseExist.get());
+            }
             return _tourPackageRepository.save(tourPackageNew);
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
@@ -73,6 +75,10 @@ public class TourPackageService implements TourPackageInterface {
             tourPackageUpdate.setOriginCity(tourPackageDto.getOriginCity());
             tourPackageUpdate.setDestinyCity(tourPackageDto.getDestinyCity());
             tourPackageUpdate.setTypeTransport(tourPackageDto.getTypeTransport());
+            Optional<Enterprise> enterpriseExist = _enterpriseRepository.findById(tourPackageDto.getEnterpriseId());
+            if (enterpriseExist.isPresent()){
+                tourPackageUpdate.setEnterprise(enterpriseExist.get());
+            }
             _tourPackageRepository.save(tourPackageUpdate);
             return tourPackageUpdate;
         } catch (RuntimeException e) {

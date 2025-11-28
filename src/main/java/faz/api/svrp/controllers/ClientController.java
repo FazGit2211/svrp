@@ -45,7 +45,7 @@ public class ClientController {
         }
     }
 
-    @PutMapping(name = "/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Client> updateClientById(@RequestBody ClientDto client,@PathVariable int id){
         try{
             Client clientUpdated = _clientService.update(client,id);
@@ -58,7 +58,7 @@ public class ClientController {
         }
     }
 
-    @DeleteMapping(name = "/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Client> deleteClientById(@PathVariable int id){
         try {
             Client clientDeleted = _clientService.deleteById(id);

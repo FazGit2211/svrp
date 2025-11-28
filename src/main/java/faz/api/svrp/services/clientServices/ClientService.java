@@ -82,7 +82,7 @@ public class ClientService implements ClientInterface {
                 return null;
             }
             Client clientDelete = clientExist.get();
-            _clientRepository.delete(clientDelete);
+            _clientRepository.deleteById(id);
             return clientDelete;
         } catch (RuntimeException e) {
             throw new RuntimeException(e);

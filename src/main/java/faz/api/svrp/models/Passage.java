@@ -2,8 +2,6 @@ package faz.api.svrp.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
 
 @Entity
 @Table(name = "Passages")
@@ -18,11 +16,14 @@ public class Passage {
     @ManyToOne
     @JoinColumn(name = "client_id")
     @JsonIgnore
-    private Client  client;
+    private Client client;
 
     @ManyToOne
     @JoinColumn(name = "tourpackage_id")
     private TourPackage tourPackage;
+
+    public Passage() {
+    }
 
     public Passage(String date, String ticketNumber, String seatNumber) {
         this.date = date;
@@ -48,5 +49,29 @@ public class Passage {
 
     public void setTourPackage(TourPackage tourPackage) {
         this.tourPackage = tourPackage;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public String getTicketNumber() {
+        return ticketNumber;
+    }
+
+    public String getSeatNumber() {
+        return seatNumber;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public TourPackage getTourPackage() {
+        return tourPackage;
+    }
+
+    public int getId() {
+        return id;
     }
 }
