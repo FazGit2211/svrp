@@ -15,59 +15,31 @@ public class ClientController {
     @Autowired
     private final ClientService _clientService;
 
-    public ClientController(ClientService clientServ){
+    public ClientController(ClientService clientServ) {
         _clientService = clientServ;
     }
 
     @PostMapping
-    public ResponseEntity<Client> createClient(@RequestBody ClientDto client){
-        try {
-            Client clientCreated = _clientService.createNew(client);
-            if (clientCreated == null){
-                return ResponseEntity.badRequest().build();
-            }
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
+    public ResponseEntity<String> createClient(@RequestBody ClientDto client) {
+        Client clientCreated = _clientService.createNew(client);
+        return ResponseEntity.status(201).build();
     }
 
     @GetMapping
-    public ResponseEntity<List<Client>> getAllClients(){
-        try {
-            List<Client> clientList = _clientService.getAll();
-            if (clientList.isEmpty()){
-                return ResponseEntity.noContent().build();
-            }
-            return ResponseEntity.ok(clientList);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
+    public ResponseEntity<List<Client>> getAllClients() {
+        List<Client> clientList = _clientService.getAll();
+        return ResponseEntity.ok(clientList);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Client> updateClientById(@RequestBody ClientDto client,@PathVariable int id){
-        try{
-            Client clientUpdated = _clientService.update(client,id);
-            if (clientUpdated == null){
-                return ResponseEntity.badRequest().build();
-            }
-            return ResponseEntity.ok(clientUpdated);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
+    public ResponseEntity<Client> updateClientById(@RequestBody ClientDto client, @PathVariable int id) {
+        Client clientUpdated = _clientService.update(client, id);
+        return ResponseEntity.ok(clientUpdated);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Client> deleteClientById(@PathVariable int id){
-        try {
-            Client clientDeleted = _clientService.deleteById(id);
-            if (clientDeleted == null){
-                return ResponseEntity.badRequest().build();
-            }
-            return ResponseEntity.ok(clientDeleted);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
+    public ResponseEntity<Client> deleteClientById(@PathVariable int id) {
+        Client clientDeleted = _clientService.deleteById(id);
+        return ResponseEntity.ok(clientDeleted);
     }
 }
