@@ -3,7 +3,6 @@ package faz.api.svrp.controllers;
 import faz.api.svrp.dtos.PassageDto;
 import faz.api.svrp.models.Passage;
 import faz.api.svrp.services.passageServices.PassageService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,8 +11,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/passages")
 public class PassageController {
-
-    @Autowired
     private final PassageService _passageService;
 
     public PassageController(PassageService passageServ) {

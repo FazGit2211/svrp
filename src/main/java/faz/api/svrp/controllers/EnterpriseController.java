@@ -3,7 +3,6 @@ package faz.api.svrp.controllers;
 import faz.api.svrp.dtos.EnterpriseDto;
 import faz.api.svrp.models.Enterprise;
 import faz.api.svrp.services.enterpriseServices.EnterpriseService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,8 +11,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/enterprises")
 public class EnterpriseController {
-
-    @Autowired
     private final EnterpriseService _enterpriseService;
 
     public EnterpriseController(EnterpriseService enterpriseServ){

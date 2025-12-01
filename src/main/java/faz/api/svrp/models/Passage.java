@@ -12,6 +12,7 @@ public class Passage {
     private String date;
     private String ticketNumber;
     private String seatNumber;
+    private double totalPrice;
 
     @ManyToOne
     @JoinColumn(name = "client_id")
@@ -25,10 +26,11 @@ public class Passage {
     public Passage() {
     }
 
-    public Passage(String date, String ticketNumber, String seatNumber) {
+    public Passage(String date, String ticketNumber, String seatNumber,double totalPrice) {
         this.date = date;
         this.ticketNumber = ticketNumber;
         this.seatNumber = seatNumber;
+        this.totalPrice = totalPrice;
     }
 
     public void setTicketNumber(String ticketNumber) {

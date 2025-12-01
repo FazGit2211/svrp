@@ -37,8 +37,10 @@ public class TourPackageService implements TourPackageInterface {
                 return null;
             }
             DiscountPercentage discountPercentage = new DiscountPercentage();
-            double addDiscount = discountPercentage.calculateDiscount(tourPackageDto.getPrice(), 10, 21);
-            TourPackage tourPackageNew = new TourPackage(addDiscount, tourPackageDto.getOriginCity(), tourPackageDto.getDestinyCity(), tourPackageDto.getTypeTransport());
+            discountPercentage.setPercentageDiscount(10);
+            discountPercentage.price = tourPackageDto.getPrice();
+            double addDiscount = discountPercentage.calculateDiscount();
+            TourPackage tourPackageNew = new TourPackage(addDiscount, tourPackageDto.getOriginCity(), tourPackageDto.getDestinyCity(), tourPackageDto.getTypeTransport(),tourPackageDto.getDate());
             Optional<Enterprise> enterpriseExist = _enterpriseRepository.findById(tourPackageDto.getEnterpriseId());
             if (enterpriseExist.isPresent()) {
                 tourPackageNew.setEnterprise(enterpriseExist.get());

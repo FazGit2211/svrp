@@ -41,7 +41,7 @@ public class PassageService implements PassageInterface {
             if (emptyValueData) {
                 return null;
             }
-            Passage passageNew = new Passage(passage.getDate(), passage.getTicketNumber(), passage.getSeatNumber());
+            Passage passageNew = new Passage(passage.getDate(), passage.getTicketNumber(), passage.getSeatNumber(),passage.getTotalPrice());
             Optional<Client> clientExist = _clientRepository.findById(passage.getClientId());
             if (clientExist.isPresent()) {
                 passageNew.setClient(clientExist.get());

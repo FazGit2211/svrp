@@ -2,5 +2,7 @@ package faz.api.svrp.models;
 
 public abstract class Discount {
 
-    public abstract double calculateDiscount(double prise,double discount,double iva);
+    public double price;
+    public double iva;
+    public abstract double calculateDiscount();
 }

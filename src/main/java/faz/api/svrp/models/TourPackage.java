@@ -21,6 +21,7 @@ public class TourPackage {
     private String originCity;
     private String destinyCity;
     private String typeTransport;
+    private String date;
 
     @OneToMany(mappedBy = "tourPackage")
     @JsonIgnore
@@ -30,11 +31,12 @@ public class TourPackage {
     @JoinColumn(name = "enterprise_id")
     private Enterprise enterprise;
 
-    public TourPackage(double price, String originCity, String destinyCity, String typeTransport) {
+    public TourPackage(double price, String originCity, String destinyCity, String typeTransport, String date) {
         this.price = price;
         this.originCity = originCity;
         this.destinyCity = destinyCity;
         this.typeTransport = typeTransport;
+        this.date = date;
     }
 
     public void setPrice(double price) {
@@ -55,5 +57,9 @@ public class TourPackage {
 
     public void setEnterprise(Enterprise enterprise) {
         this.enterprise = enterprise;
+    }
+
+    public String getDate() {
+        return date;
     }
 }

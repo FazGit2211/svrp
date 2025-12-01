@@ -2,9 +2,15 @@ package faz.api.svrp.models;
 
 public class DiscountPercentage extends Discount{
 
+    private double percentageDiscount;
     @Override
-    public double calculateDiscount(double prise, double discount,double iva) {
-        double result = prise * (1 + iva /100);
-        return result;
+    public double calculateDiscount() {
+        return this.price * (this.percentageDiscount + this.iva /100);
     }
+
+    public void setPercentageDiscount(double percentageDiscount) {
+        this.percentageDiscount = percentageDiscount;
+    }
+
+
 }
