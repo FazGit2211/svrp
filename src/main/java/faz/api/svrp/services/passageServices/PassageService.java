@@ -1,7 +1,11 @@
 package faz.api.svrp.services.passageServices;
 
 import faz.api.svrp.dtos.PassageDto;
+import faz.api.svrp.exceptions.BadRequestException;
+import faz.api.svrp.exceptions.NoContentException;
+import faz.api.svrp.exceptions.ResourceNotFoundException;
 import faz.api.svrp.models.Client;
+import faz.api.svrp.models.Discount;
 import faz.api.svrp.models.Passage;
 import faz.api.svrp.models.TourPackage;
 import faz.api.svrp.repositorys.ClientRepository;
@@ -15,14 +19,8 @@ import java.util.Optional;
 
 @Service
 public class PassageService implements PassageInterface {
-
-    @Autowired
     private final PassageRepository _passageRepository;
-
-    @Autowired
     private final ClientRepository _clientRepository;
-
-    @Autowired
     private final TourPackageRepository _tourPackageRepository;
 
     public PassageService(PassageRepository passageRepo, ClientRepository clientRepo, TourPackageRepository tourPackageRepo) {
@@ -36,78 +34,71 @@ public class PassageService implements PassageInterface {
 
     @Override
     public Passage createNewPassage(PassageDto passage) {
-        try {
-            emptyValueData = emptyValues(passage);
-            if (emptyValueData) {
-                return null;
-            }
-            Passage passageNew = new Passage(passage.getDate(), passage.getTicketNumber(), passage.getSeatNumber(),passage.getTotalPrice());
-            Optional<Client> clientExist = _clientRepository.findById(passage.getClientId());
-            if (clientExist.isPresent()) {
-                passageNew.setClient(clientExist.get());
-            }
-            Optional<TourPackage> tourPackageExist = _tourPackageRepository.findById(passage.getTourpackageId());
-            if (tourPackageExist.isPresent()) {
-                passageNew.setTourPackage(tourPackageExist.get());
-            }
-            return _passageRepository.save(passageNew);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+        emptyValueData = emptyValues(passage);
+        if (emptyValueData) {
+            throw new BadRequestException("Empty values.");
         }
+        //Aplicar descuento
+        Discount.iva = 21;
+        Discount.percentageDiscount = 10;
+        double priceWithDiscount = Discount.calculateDiscount(passage.getTotalPrice());
+        Passage passageNew = new Passage(passage.getDate(), passage.getTicketNumber(), passage.getSeatNumber(), priceWithDiscount);
+        Optional<Client> clientExist = _clientRepository.findById(passage.getClientId());
+        if (clientExist.isPresent()) {
+            passageNew.setClient(clientExist.get());
+        }
+        Optional<TourPackage> tourPackageExist = _tourPackageRepository.findById(passage.getTourpackageId());
+        if (tourPackageExist.isPresent()) {
+            passageNew.setTourPackage(tourPackageExist.get());
+        }
+        return _passageRepository.save(passageNew);
     }
 
     @Override
     public List<Passage> getAllPassages() {
-        try {
-            return _passageRepository.findAll();
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+        List<Passage> passageList = _passageRepository.findAll();
+        if (passageList.isEmpty() || passageList == null) {
+            throw new NoContentException("Empty passages");
         }
+        return passageList;
     }
 
     @Override
     public Passage updatePassage(PassageDto passage, int id) {
-        try {
-            emptyValueData = emptyValues(passage);
-            emptyValueId = emptyId(id);
-            if (emptyValueData || emptyValueId) {
-                return null;
-            }
-            Optional<Passage> passageExist = _passageRepository.findById(id);
-            if (passageExist.isEmpty()) {
-                return null;
-            }
-            Passage passageUpdate = passageExist.get();
-            passageUpdate.setDate(passage.getDate());
-            passageUpdate.setSeatNumber(passage.getSeatNumber());
-            passageUpdate.setTicketNumber(passage.getTicketNumber());
-            Optional<TourPackage> tourPackageExist = _tourPackageRepository.findById(passage.getTourpackageId());
-            if (tourPackageExist.isPresent()) {
-                passageUpdate.setTourPackage(tourPackageExist.get());
-            }
-            _passageRepository.save(passageUpdate);
-            return passageUpdate;
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+        emptyValueData = emptyValues(passage);
+        emptyValueId = emptyId(id);
+        if (emptyValueData || emptyValueId) {
+            throw new BadRequestException("Empty values.");
         }
+        Optional<Passage> passageExist = _passageRepository.findById(id);
+        if (passageExist.isEmpty()) {
+            throw new ResourceNotFoundException("Passage not exist");
+        }
+        Passage passageUpdate = passageExist.get();
+        passageUpdate.setDate(passage.getDate());
+        passageUpdate.setSeatNumber(passage.getSeatNumber());
+        passageUpdate.setTicketNumber(passage.getTicketNumber());
+        passageUpdate.setTotalPrice(passage.getTotalPrice());
+        Optional<TourPackage> tourPackageExist = _tourPackageRepository.findById(passage.getTourpackageId());
+        if (tourPackageExist.isPresent()) {
+            passageUpdate.setTourPackage(tourPackageExist.get());
+        }
+        _passageRepository.save(passageUpdate);
+        return passageUpdate;
     }
 
     @Override
     public Passage deletePassage(int id) {
-        try {
-            emptyValueId = emptyId(id);
-            if (emptyValueId) {
-                return null;
-            }
-            Optional<Passage> passageExist = _passageRepository.findById(id);
-            if (passageExist.isEmpty()) {
-                return null;
-            }
-            _passageRepository.delete(passageExist.get());
-            return passageExist.get();
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+        emptyValueId = emptyId(id);
+        if (emptyValueId) {
+            throw new BadRequestException("Empty values.");
         }
+        Optional<Passage> passageExist = _passageRepository.findById(id);
+        if (passageExist.isEmpty()) {
+            throw new ResourceNotFoundException("Passage not exist");
+        }
+        _passageRepository.delete(passageExist.get());
+        return passageExist.get();
     }
 
     private boolean emptyValues(PassageDto passageDto) {

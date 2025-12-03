@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InternalServerErrorException.class)
     public ResponseEntity<String> handleServerError(InternalServerErrorException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("Black Hawk Down", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(NoContentException.class)

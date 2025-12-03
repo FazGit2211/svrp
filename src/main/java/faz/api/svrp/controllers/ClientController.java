@@ -19,7 +19,7 @@ public class ClientController {
 
     @PostMapping
     public ResponseEntity<String> createClient(@RequestBody ClientDto client) {
-        Client clientCreated = _clientService.createNew(client);
+        _clientService.createNew(client);
         return ResponseEntity.status(201).build();
     }
 

@@ -8,7 +8,7 @@ import java.util.List;
 @Entity
 @DiscriminatorValue("CLIENT")
 public class Client extends Person {
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
     private List<Passage> passages;
 
     public Client() {

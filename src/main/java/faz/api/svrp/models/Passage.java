@@ -26,7 +26,7 @@ public class Passage {
     public Passage() {
     }
 
-    public Passage(String date, String ticketNumber, String seatNumber,double totalPrice) {
+    public Passage(String date, String ticketNumber, String seatNumber, double totalPrice) {
         this.date = date;
         this.ticketNumber = ticketNumber;
         this.seatNumber = seatNumber;
@@ -53,6 +53,10 @@ public class Passage {
         this.tourPackage = tourPackage;
     }
 
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
     public String getDate() {
         return date;
     }
@@ -63,6 +67,10 @@ public class Passage {
 
     public String getSeatNumber() {
         return seatNumber;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
     }
 
     public Client getClient() {

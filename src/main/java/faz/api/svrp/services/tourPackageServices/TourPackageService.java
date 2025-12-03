@@ -1,7 +1,9 @@
 package faz.api.svrp.services.tourPackageServices;
 
 import faz.api.svrp.dtos.TourPackageDto;
-import faz.api.svrp.models.DiscountPercentage;
+import faz.api.svrp.exceptions.BadRequestException;
+import faz.api.svrp.exceptions.NoContentException;
+import faz.api.svrp.exceptions.ResourceNotFoundException;
 import faz.api.svrp.models.Enterprise;
 import faz.api.svrp.models.TourPackage;
 import faz.api.svrp.repositorys.EnterpriseRepository;
@@ -31,79 +33,65 @@ public class TourPackageService implements TourPackageInterface {
 
     @Override
     public TourPackage createNew(TourPackageDto tourPackageDto) {
-        try {
-            emptyValueData = emptyValues(tourPackageDto);
-            if (emptyValueData) {
-                return null;
-            }
-            DiscountPercentage discountPercentage = new DiscountPercentage();
-            discountPercentage.setPercentageDiscount(10);
-            discountPercentage.price = tourPackageDto.getPrice();
-            double addDiscount = discountPercentage.calculateDiscount();
-            TourPackage tourPackageNew = new TourPackage(addDiscount, tourPackageDto.getOriginCity(), tourPackageDto.getDestinyCity(), tourPackageDto.getTypeTransport(),tourPackageDto.getDate());
-            Optional<Enterprise> enterpriseExist = _enterpriseRepository.findById(tourPackageDto.getEnterpriseId());
-            if (enterpriseExist.isPresent()) {
-                tourPackageNew.setEnterprise(enterpriseExist.get());
-            }
-            return _tourPackageRepository.save(tourPackageNew);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+        emptyValueData = emptyValues(tourPackageDto);
+        if (emptyValueData) {
+            throw new BadRequestException("Empty values.");
         }
+        TourPackage tourPackageNew = new TourPackage(tourPackageDto.getPrice(), tourPackageDto.getOriginCity(), tourPackageDto.getDestinyCity(), tourPackageDto.getTypeTransport(), tourPackageDto.getDate());
+        Optional<Enterprise> enterpriseExist = _enterpriseRepository.findById(tourPackageDto.getEnterpriseId());
+        if (enterpriseExist.isPresent()) {
+            tourPackageNew.setEnterprise(enterpriseExist.get());
+        }
+        return _tourPackageRepository.save(tourPackageNew);
     }
 
     @Override
     public List<TourPackage> getAll() {
-        try {
-            return _tourPackageRepository.findAll();
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+        List<TourPackage> tourPackageList = _tourPackageRepository.findAll();
+        if (tourPackageList.isEmpty() || tourPackageList == null) {
+            throw new NoContentException("Empty passages");
         }
+        return tourPackageList;
     }
 
     @Override
     public TourPackage update(TourPackageDto tourPackageDto, int id) {
-        try {
-            emptyValueData = emptyValues(tourPackageDto);
-            emptyValueId = emptyId(id);
-            if (emptyValueData || emptyValueId) {
-                return null;
-            }
-            Optional<TourPackage> tourPackageExist = _tourPackageRepository.findById(id);
-            if (tourPackageExist.isEmpty()) {
-                return null;
-            }
-            TourPackage tourPackageUpdate = tourPackageExist.get();
-            tourPackageUpdate.setPrice(tourPackageDto.getPrice());
-            tourPackageUpdate.setOriginCity(tourPackageDto.getOriginCity());
-            tourPackageUpdate.setDestinyCity(tourPackageDto.getDestinyCity());
-            tourPackageUpdate.setTypeTransport(tourPackageDto.getTypeTransport());
-            Optional<Enterprise> enterpriseExist = _enterpriseRepository.findById(tourPackageDto.getEnterpriseId());
-            if (enterpriseExist.isPresent()){
-                tourPackageUpdate.setEnterprise(enterpriseExist.get());
-            }
-            _tourPackageRepository.save(tourPackageUpdate);
-            return tourPackageUpdate;
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+        emptyValueData = emptyValues(tourPackageDto);
+        emptyValueId = emptyId(id);
+        if (emptyValueData || emptyValueId) {
+            throw new BadRequestException("Empty values.");
         }
+        Optional<TourPackage> tourPackageExist = _tourPackageRepository.findById(id);
+        if (tourPackageExist.isEmpty()) {
+            throw new ResourceNotFoundException("Tour package not exist");
+        }
+        TourPackage tourPackageUpdate = tourPackageExist.get();
+        tourPackageUpdate.setPrice(tourPackageDto.getPrice());
+        tourPackageUpdate.setOriginCity(tourPackageDto.getOriginCity());
+        tourPackageUpdate.setDestinyCity(tourPackageDto.getDestinyCity());
+        tourPackageUpdate.setTypeTransport(tourPackageDto.getTypeTransport());
+        tourPackageUpdate.setDate(tourPackageDto.getDate());
+        Optional<Enterprise> enterpriseExist = _enterpriseRepository.findById(tourPackageDto.getEnterpriseId());
+        if (enterpriseExist.isPresent()) {
+            tourPackageUpdate.setEnterprise(enterpriseExist.get());
+        }
+        _tourPackageRepository.save(tourPackageUpdate);
+        return tourPackageUpdate;
     }
 
     @Override
     public TourPackage delete(int id) {
-        try {
-            emptyValueId = emptyId(id);
-            if (emptyValueId) {
-                return null;
-            }
-            Optional<TourPackage> tourPackageExist = _tourPackageRepository.findById(id);
-            if (tourPackageExist.isEmpty()) {
-                return null;
-            }
-            _tourPackageRepository.delete(tourPackageExist.get());
-            return tourPackageExist.get();
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+
+        emptyValueId = emptyId(id);
+        if (emptyValueId) {
+            throw new BadRequestException("Empty values.");
         }
+        Optional<TourPackage> tourPackageExist = _tourPackageRepository.findById(id);
+        if (tourPackageExist.isEmpty()) {
+            throw new ResourceNotFoundException("Tour package not exist");
+        }
+        _tourPackageRepository.delete(tourPackageExist.get());
+        return tourPackageExist.get();
     }
 
     private boolean emptyValues(TourPackageDto tourPackageDto) {

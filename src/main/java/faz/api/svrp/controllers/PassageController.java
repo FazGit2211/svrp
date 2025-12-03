@@ -19,53 +19,25 @@ public class PassageController {
 
     @PostMapping
     public ResponseEntity<Passage> createPassage(@RequestBody PassageDto passage) {
-        try {
-            Passage passageCreated = _passageService.createNewPassage(passage);
-            if (passageCreated == null) {
-                return ResponseEntity.badRequest().build();
-            }
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
+        _passageService.createNewPassage(passage);
+        return ResponseEntity.status(201).build();
     }
 
     @GetMapping
     public ResponseEntity<List<Passage>> getAllPassages() {
-        try {
-            List<Passage> passageList = _passageService.getAllPassages();
-            if (passageList.isEmpty()) {
-                return ResponseEntity.noContent().build();
-            }
-            return ResponseEntity.ok(passageList);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
+        List<Passage> passageList = _passageService.getAllPassages();
+        return ResponseEntity.ok(passageList);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Passage> updatePassageById(@RequestBody PassageDto passage, @PathVariable int id) {
-        try {
-            Passage passageUpdated = _passageService.updatePassage(passage, id);
-            if (passageUpdated == null) {
-                return ResponseEntity.badRequest().build();
-            }
-            return ResponseEntity.ok(passageUpdated);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
+        Passage passageUpdated = _passageService.updatePassage(passage, id);
+        return ResponseEntity.ok(passageUpdated);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Passage> deletePassageById(@PathVariable int id) {
-        try {
-            Passage passageDeleted = _passageService.deletePassage(id);
-            if (passageDeleted == null) {
-                return ResponseEntity.badRequest().build();
-            }
-            return ResponseEntity.ok(passageDeleted);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
+        Passage passageDeleted = _passageService.deletePassage(id);
+        return ResponseEntity.ok(passageDeleted);
     }
 }

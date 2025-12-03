@@ -13,59 +13,31 @@ import java.util.List;
 public class EnterpriseController {
     private final EnterpriseService _enterpriseService;
 
-    public EnterpriseController(EnterpriseService enterpriseServ){
+    public EnterpriseController(EnterpriseService enterpriseServ) {
         _enterpriseService = enterpriseServ;
     }
 
     @PostMapping
-    public ResponseEntity<Enterprise> createEnterprise(@RequestBody EnterpriseDto enterprise){
-        try {
-            Enterprise enterpriseCreated = _enterpriseService.createNew(enterprise);
-            if (enterpriseCreated == null){
-                return ResponseEntity.badRequest().build();
-            }
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
+    public ResponseEntity<Enterprise> createEnterprise(@RequestBody EnterpriseDto enterprise) {
+        _enterpriseService.createNew(enterprise);
+        return ResponseEntity.status(201).build();
     }
 
     @GetMapping
-    public ResponseEntity<List<Enterprise>> getAllEnterprises(){
-        try {
-            List<Enterprise> enterpriseList = _enterpriseService.getAll();
-            if (enterpriseList.isEmpty()){
-                return ResponseEntity.noContent().build();
-            }
-            return ResponseEntity.ok(enterpriseList);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
+    public ResponseEntity<List<Enterprise>> getAllEnterprises() {
+        List<Enterprise> enterpriseList = _enterpriseService.getAll();
+        return ResponseEntity.ok(enterpriseList);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Enterprise> updateEnterpriseById(@RequestBody EnterpriseDto enterpriseDto,@PathVariable int id){
-        try {
-            Enterprise enterpriseUpdated = _enterpriseService.update(enterpriseDto, id);
-            if (enterpriseUpdated == null){
-                return ResponseEntity.badRequest().build();
-            }
-            return ResponseEntity.ok(enterpriseUpdated);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
+    public ResponseEntity<Enterprise> updateEnterpriseById(@RequestBody EnterpriseDto enterpriseDto, @PathVariable int id) {
+        Enterprise enterpriseUpdated = _enterpriseService.update(enterpriseDto, id);
+        return ResponseEntity.ok(enterpriseUpdated);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Enterprise> deleteEnterpriseById(@PathVariable int id){
-        try {
-            Enterprise enterpriseDeleted = _enterpriseService.delete(id);
-            if (enterpriseDeleted == null){
-                return ResponseEntity.badRequest().build();
-            }
-            return ResponseEntity.ok(enterpriseDeleted);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
-        }
+    public ResponseEntity<Enterprise> deleteEnterpriseById(@PathVariable int id) {
+        Enterprise enterpriseDeleted = _enterpriseService.delete(id);
+        return ResponseEntity.ok(enterpriseDeleted);
     }
 }

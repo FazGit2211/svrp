@@ -1,11 +1,8 @@
-####
-### SVRP
-## Api en desarrollo para simular un sistema de venta y reserva de pasajes (SVRP), en la cúal se compone
-## de entidades cómo empresa, en donde se pueden crean,editar y eliminar tanto las empresas como sus paquetes turístico relacionados,
-## también se le pueden aplicar ciertos descuento a los paquetes.
-## El cliente puede seleccionar cierto paquete para luego poder generar un pasaje,
-## así cómo la posibilidad de obtener a sus pasajes relacionados para editar los datos y/o dar de baja.
-
+SVRP
+Api en desarrollo para simular un sistema de venta y reserva de pasajes (SVRP), en la cúal se compone
+de entidades cómo empresa, paquete turístico, cliente y pasaje.
+Poseén las funcionalidades básicas para realizar el crud por cada entidad sin tener en cuenta sus relaciones que siguen en modo de prueba.
+Su objetivo es que las empresas puedan ofrecer sus paquetes turísticos aplicando ciertos descuentos, para que los clientes pueden seleccionar y comprar sus pasajes.
 
 Herramientas de desarrollo:
 Java,Spring Boot,Jpa,MySQL
