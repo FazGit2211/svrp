@@ -40,4 +40,10 @@ public class PassageController {
         Passage passageDeleted = _passageService.deletePassage(id);
         return ResponseEntity.ok(passageDeleted);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Passage> findPassageById(@PathVariable int id) {
+        Passage passageExist = _passageService.findPassageById(id);
+        return ResponseEntity.ok(passageExist);
+    }
 }

@@ -1,14 +1,17 @@
 package faz.api.svrp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @DiscriminatorValue("CLIENT")
 public class Client extends Person {
     @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Passage> passages;
 
     public Client() {
@@ -21,6 +24,7 @@ public class Client extends Person {
         this.birthdate = birthdate;
         this.address = address;
         this.email = email;
+        this.passages = new ArrayList<>();
     }
 
     public void setName(String name) {
@@ -61,5 +65,9 @@ public class Client extends Person {
 
     public List<Passage> getPassages() {
         return passages;
+    }
+
+    public void setPassages(List<Passage> passages) {
+        this.passages = passages;
     }
 }

@@ -11,8 +11,10 @@ import faz.api.svrp.models.TourPackage;
 import faz.api.svrp.repositorys.ClientRepository;
 import faz.api.svrp.repositorys.PassageRepository;
 import faz.api.svrp.repositorys.TourPackageRepository;
+import jakarta.persistence.Convert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,16 +43,18 @@ public class PassageService implements PassageInterface {
         //Aplicar descuento
         Discount.iva = 21;
         Discount.percentageDiscount = 10;
-        double priceWithDiscount = Discount.calculateDiscount(passage.getTotalPrice());
+        float priceWithDiscount = Discount.calculateDiscount(passage.getTotalPrice());
         Passage passageNew = new Passage(passage.getDate(), passage.getTicketNumber(), passage.getSeatNumber(), priceWithDiscount);
         Optional<Client> clientExist = _clientRepository.findById(passage.getClientId());
-        if (clientExist.isPresent()) {
-            passageNew.setClient(clientExist.get());
+        if (clientExist.isEmpty()) {
+            throw new BadRequestException("Empty client.");
         }
         Optional<TourPackage> tourPackageExist = _tourPackageRepository.findById(passage.getTourpackageId());
-        if (tourPackageExist.isPresent()) {
-            passageNew.setTourPackage(tourPackageExist.get());
+        if (tourPackageExist.isEmpty()) {
+            throw new BadRequestException("Empty tour package.");
         }
+        passageNew.setClient(clientExist.get());
+        passageNew.setTourPackage(tourPackageExist.get());
         return _passageRepository.save(passageNew);
     }
 
@@ -79,15 +83,12 @@ public class PassageService implements PassageInterface {
         passageUpdate.setSeatNumber(passage.getSeatNumber());
         passageUpdate.setTicketNumber(passage.getTicketNumber());
         passageUpdate.setTotalPrice(passage.getTotalPrice());
-        Optional<TourPackage> tourPackageExist = _tourPackageRepository.findById(passage.getTourpackageId());
-        if (tourPackageExist.isPresent()) {
-            passageUpdate.setTourPackage(tourPackageExist.get());
-        }
         _passageRepository.save(passageUpdate);
         return passageUpdate;
     }
 
     @Override
+    @Transactional
     public Passage deletePassage(int id) {
         emptyValueId = emptyId(id);
         if (emptyValueId) {
@@ -98,6 +99,19 @@ public class PassageService implements PassageInterface {
             throw new ResourceNotFoundException("Passage not exist");
         }
         _passageRepository.delete(passageExist.get());
+        return passageExist.get();
+    }
+
+    @Override
+    public Passage findPassageById(int id) {
+        emptyValueId = emptyId(id);
+        if (emptyValueId) {
+            throw new BadRequestException("Empty values.");
+        }
+        Optional<Passage> passageExist = _passageRepository.findById(id);
+        if (passageExist.isEmpty()) {
+            throw new ResourceNotFoundException("Passage not exist");
+        }
         return passageExist.get();
     }
 

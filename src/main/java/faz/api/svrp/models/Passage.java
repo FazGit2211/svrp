@@ -16,7 +16,6 @@ public class Passage {
 
     @ManyToOne
     @JoinColumn(name = "client_id")
-    @JsonIgnore
     private Client client;
 
     @ManyToOne

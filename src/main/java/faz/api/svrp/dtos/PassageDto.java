@@ -4,7 +4,7 @@ public class PassageDto {
     private String date;
     private String ticketNumber;
     private String seatNumber;
-    private double totalPrice;
+    private float totalPrice;
     private int clientId;
     private int tourpackageId;
 
@@ -20,7 +20,7 @@ public class PassageDto {
         return seatNumber;
     }
 
-    public double getTotalPrice() {
+    public float getTotalPrice() {
         return totalPrice;
     }
 

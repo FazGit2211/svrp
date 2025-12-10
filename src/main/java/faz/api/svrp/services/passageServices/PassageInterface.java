@@ -13,4 +13,6 @@ public interface PassageInterface {
     Passage updatePassage(PassageDto passageDto, int id);
 
     Passage deletePassage(int id);
+
+    Passage findPassageById(int id);
 }

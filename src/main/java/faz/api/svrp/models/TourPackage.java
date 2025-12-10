@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -37,6 +38,7 @@ public class TourPackage {
         this.destinyCity = destinyCity;
         this.typeTransport = typeTransport;
         this.date = date;
+        this.passages = new ArrayList<>();
     }
 
     public void setPrice(double price) {
@@ -61,5 +63,13 @@ public class TourPackage {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public List<Passage> getPassages() {
+        return passages;
     }
 }
