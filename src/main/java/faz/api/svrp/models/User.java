@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "user",uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
+@Table(name = "user", uniqueConstraints = {@UniqueConstraint(columnNames = {"username"})})
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,13 +31,26 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public User(String username,String password,String name,String surname,String birthday,String email){
+    public User(String username, String name, String surname, String birthday, String email) {
         this.username = username;
-        this.password = password;
         this.name = name;
         this.surname = surname;
         this.birthday = birthday;
-        this.role = Role.ADMIN;
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setRole(Role role) {
+        if (!role.equals("")) {
+            this.role = role;
+        }
+    }
+
+    public Role getRole() {
+        return role;
     }
 
     @Override
@@ -47,12 +60,12 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return "";
+        return this.password;
     }
 
     @Override
     public String getUsername() {
-        return "";
+        return this.username;
     }
 
     @Override

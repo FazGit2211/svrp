@@ -6,6 +6,7 @@ public class TourPackageDto {
     private String destinyCity;
     private String typeTransport;
     private String date;
+    private String imageUrl;
     private int enterpriseId;
 
     public double getPrice() {
@@ -26,6 +27,10 @@ public class TourPackageDto {
 
     public String getDate() {
         return date;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     public int getEnterpriseId() {

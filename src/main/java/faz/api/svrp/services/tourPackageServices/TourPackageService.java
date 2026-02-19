@@ -37,7 +37,7 @@ public class TourPackageService implements TourPackageInterface {
         if (emptyValueData) {
             throw new BadRequestException("Empty values.");
         }
-        TourPackage tourPackageNew = new TourPackage(tourPackageDto.getPrice(), tourPackageDto.getOriginCity(), tourPackageDto.getDestinyCity(), tourPackageDto.getTypeTransport(), tourPackageDto.getDate());
+        TourPackage tourPackageNew = new TourPackage(tourPackageDto.getPrice(), tourPackageDto.getOriginCity(), tourPackageDto.getDestinyCity(), tourPackageDto.getTypeTransport(), tourPackageDto.getDate(),tourPackageDto.getImageUrl());
         Optional<Enterprise> enterpriseExist = _enterpriseRepository.findById(tourPackageDto.getEnterpriseId());
         if (enterpriseExist.isPresent()) {
             tourPackageNew.setEnterprise(enterpriseExist.get());

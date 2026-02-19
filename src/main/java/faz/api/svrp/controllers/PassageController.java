@@ -4,6 +4,7 @@ import faz.api.svrp.dtos.PassageDto;
 import faz.api.svrp.models.Passage;
 import faz.api.svrp.services.passageServices.PassageService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,12 +18,14 @@ public class PassageController {
         _passageService = passageServ;
     }
 
+    @PreAuthorize("Admin")
     @PostMapping
     public ResponseEntity<Passage> createPassage(@RequestBody PassageDto passage) {
         _passageService.createNewPassage(passage);
         return ResponseEntity.status(201).build();
     }
 
+    @PreAuthorize("Admin")
     @GetMapping
     public ResponseEntity<List<Passage>> getAllPassages() {
         List<Passage> passageList = _passageService.getAllPassages();

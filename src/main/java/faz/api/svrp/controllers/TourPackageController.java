@@ -4,6 +4,7 @@ import faz.api.svrp.dtos.TourPackageDto;
 import faz.api.svrp.models.TourPackage;
 import faz.api.svrp.services.tourPackageServices.TourPackageService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public class TourPackageController {
         _tourPackageService = tourPackageServ;
     }
 
+    @PreAuthorize("Admin")
     @PostMapping
     public ResponseEntity<TourPackage> createTourPackage(@RequestBody TourPackageDto tourPackage) {
         _tourPackageService.createNew(tourPackage);
@@ -29,6 +31,7 @@ public class TourPackageController {
         List<TourPackage> tourPackageList = _tourPackageService.getAll();
         return ResponseEntity.ok(tourPackageList);
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<TourPackage> updateTourPackageById(@RequestBody TourPackageDto tourPackage, @PathVariable int id) {

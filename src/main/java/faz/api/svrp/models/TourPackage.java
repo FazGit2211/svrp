@@ -23,6 +23,7 @@ public class TourPackage {
     private String destinyCity;
     private String typeTransport;
     private String date;
+    private String imageUrl;
 
     @OneToMany(mappedBy = "tourPackage")
     @JsonIgnore
@@ -32,12 +33,13 @@ public class TourPackage {
     @JoinColumn(name = "enterprise_id")
     private Enterprise enterprise;
 
-    public TourPackage(double price, String originCity, String destinyCity, String typeTransport, String date) {
+    public TourPackage(double price, String originCity, String destinyCity, String typeTransport, String date,String imageUrl) {
         this.price = price;
         this.originCity = originCity;
         this.destinyCity = destinyCity;
         this.typeTransport = typeTransport;
         this.date = date;
+        this.imageUrl = imageUrl;
         this.passages = new ArrayList<>();
     }
 
